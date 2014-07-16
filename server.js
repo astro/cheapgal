@@ -69,17 +69,24 @@ app.get('/', function (req, res) {
 });
 
 var thumbGenerator = async.queue(function(task, cb) {
-    fs.stat(task.thumbPath, function(err, stats) {
-        if (err && err.code === 'ENOENT') {
-            var convert = spawn("convert", [task.path, "-resize", "192x128", task.thumbPath]);
-            convert.on('close', function(code) {
-                cb(code == 0 ? null : new Error("Convert exited with: " + code));
-            });
-        } else if (stats) {
-            cb();
-        } else {
-            cb(err);
-        }
+    fs.stat(task.path, function(err, stats) {
+        if (err)
+            return cb(err);
+
+        fs.stat(task.thumbPath, function(err, thumbStats) {
+            if ((err && err.code === 'ENOENT') ||
+                (thumbStats && thumbStats.mtime < stats.mtime)) {
+
+                var convert = spawn("convert", [task.path, "-resize", "192x128", task.thumbPath]);
+                convert.on('close', function(code) {
+                    cb(code == 0 ? null : new Error("Convert exited with: " + code));
+                });
+            } else if (thumbStats) {
+                cb();
+            } else {
+                cb(err);
+            }
+        });
     });
 }, 4);
 
