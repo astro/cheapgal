@@ -24,7 +24,8 @@ function getPhotos(cb) {
                     cb(null, {
                         date: date,
                         path: path,
-                        file: file
+                        file: file,
+                        encodedFile: encodeURIComponent(file)
                     });
                 } else {
                     cb(null);
@@ -47,7 +48,7 @@ function getPhotos(cb) {
 app.get('/', function (req, res) {
     async.series([function(cb) {
         res.writeHead(200, {
-            'Content-Type': 'text/html'
+            'Content-Type': 'text/html; encoding=UTF-8'
         });
         cb();
     }, function(cb) {
@@ -120,7 +121,6 @@ app.get('/thumbs/:name', function (req, res) {
     var file = req.params.name;
     var type = getFileType(file);
     if (type) {
-        // TODO: cache headers
         res.writeHead(200, {
             'Content-Type': type,
             'Cache-Control': 'max-age=2592000',
@@ -144,4 +144,4 @@ app.get('/thumbs/:name', function (req, res) {
     }
 });
 
-app.listen(config.port);
+app.listen(config.port, "::");

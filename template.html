@@ -8,6 +8,9 @@
         padding: 0;
         font-family: sans-serif;
       }
+      a {
+        text-decoration: none;
+      }
       h1 {
         display: block;
         margin: 0;
@@ -36,8 +39,8 @@
     <section>
       {{#photos}}
         <article>
-          <a href="/photos/{{file}}">
-            <img src="/thumbs/{{file}}">
+          <a href="/photos/{{encodedFile}}">
+            <img src="/thumbs/{{encodedFile}}">
             <p>{{file}}</p>
           </a>
         </article>
