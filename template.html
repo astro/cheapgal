@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      h1 {
+        display: block;
+        margin: 0;
+        padding: 0.2em 0.5em;
+        font-size: 200%;
+        background-color: #2f2fcf;
+        color: white;
+        text-align: center;
+      }
+      section {
+        text-align: center;
+      }
+      article {
+        display: inline-block;
+        margin: 1px;
+      }
+      article img, article p {
+        margin: 1px;
+        padding: 0;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>{{title}}</h1>
+    <section>
+      {{#photos}}
+        <article>
+          <a href="/photos/{{file}}">
+            <img src="/thumbs/{{file}}">
+            <p>{{file}}</p>
+          </a>
+        </article>
+      {{/photos}}
+    </section>
+  </body>
+</html>
